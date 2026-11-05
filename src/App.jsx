@@ -11,6 +11,9 @@ export default function App() {
   const [quantity, setQuantity] = useState('')
   const [items, setItems] = useState([])
   const [error, setError] = useState('')
+  const [editingId, setEditingId] = useState(null)
+  const [editName, setEditName] = useState('')
+  const [editQuantity, setEditQuantity] = useState('')
 
   async function loadItems() {
     const { data, error } = await supabase
@@ -39,6 +42,33 @@ export default function App() {
     }
   }
 
+  async function deleteItem(id) {
+    if (!window.confirm('Delete this drug?')) return
+    setError('')
+    const { error } = await supabase.from('pharmacy').delete().eq('id', id)
+    if (error) setError(error.message)
+    else loadItems()
+  }
+
+  function startEdit(item) {
+    setEditingId(item.id)
+    setEditName(item.name)
+    setEditQuantity(String(item.quantity))
+  }
+
+  async function saveEdit(id) {
+    setError('')
+    const { error } = await supabase
+      .from('pharmacy')
+      .update({ name: editName, quantity: Number(editQuantity) })
+      .eq('id', id)
+    if (error) setError(error.message)
+    else {
+      setEditingId(null)
+      loadItems()
+    }
+  }
+
   return (
     <div style={{ padding: 20 }}>
       <h1>Pharmacy Stock</h1>
@@ -61,7 +91,29 @@ export default function App() {
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <ul>
         {items.map((i) => (
-          <li key={i.id}>{i.name}: {i.quantity}</li>
+          <li key={i.id}>
+            {editingId === i.id ? (
+              <>
+                <input
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                />
+                <input
+                  type="number"
+                  value={editQuantity}
+                  onChange={(e) => setEditQuantity(e.target.value)}
+                />
+                <button onClick={() => saveEdit(i.id)}>Save</button>
+                <button onClick={() => setEditingId(null)}>Cancel</button>
+              </>
+            ) : (
+              <>
+                {i.name}: {i.quantity}{' '}
+                <button onClick={() => startEdit(i)}>Edit</button>
+                <button onClick={() => deleteItem(i.id)}>Delete</button>
+              </>
+            )}
+          </li>
         ))}
       </ul>
     </div>
