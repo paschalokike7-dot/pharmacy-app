@@ -1,16 +1,20 @@
-# React + Vite
+# Pharmacy Stock Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A web app for tracking drug stock in a pharmacy, built to replace manual stock counting.
 
-Currently, two official plugins are available:
+## Features
+- Add a drug with its quantity
+- View all stock in a list loaded live from the database
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Built with
+- React (Vite)
+- Supabase (PostgreSQL database)
 
-## React Compiler
+## Run it locally
+1. Run `npm install`
+2. Create a `.env` file with `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`
+3. Run `npm run dev`
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Status
+In progress. Next: edit and delete, expiry dates, staff login.
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
